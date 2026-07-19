@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Daily 4 Tournaments</title>
+    <style>
+        /* Base Reset & Colors */
+        body {
+            background-color: #0c0c0c;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ticker Style */
+        .ticker-wrap {
+            width: 100%;
+            background: #111;
+            border-top: 2px solid #ff4500;
+            border-bottom: 2px solid #ff4500;
+            padding: 8px 0;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        .ticker span {
+            color: #ff4500;
+            text-shadow: 0 0 5px #ff4500;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* Time Selection Tabs */
+        .time-tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            width: 95%;
+            max-width: 650px;
+            flex-wrap: wrap;
+        }
+
+        .time-tab {
+            background-color: #1a1a1a;
+            color: #aaa;
+            border: 2px solid #333;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .time-tab.active {
+            background-color: #ff4500;
+            color: #fff;
+            border-color: #ff4500;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+        }
+
+        /* Matches Box Layout */
+        .login-box {
+            background-color: #161616;
+            border: 2px solid #222;
+            border-radius: 8px;
+            width: 95%; 
+            max-width: 650px; 
+            padding: 20px; 
+            margin-top: 25px; 
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+        .btn:hover {
+            background-color: #e03d00;
+        }
+
+        .btn-yt {
+            background-color: #ff0000;
+            margin-top: 10px;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+        }
+        .btn-yt:hover {
+            background-color: #cc0000;
+        }
+
+        /* Live Room Box */
+        .room-details-box {
+            width: 95%;
+            max-width: 650px;
+            background: linear-gradient(145deg, #1e1e1e, #111);
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+            text-align: center;
+            box-sizing: border-box;
+            display: none;
+        }
+
+        .room-details-box h4 {
+            color: #00ffcc;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 16px;
+        }
+
+        .room-info-flex {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .room-field {
+            font-size: 18px;
+            color: #fff;
+            background: #222;
+            padding: 8px 20px;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        .room-field span {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        /* Slots Dashboard Layout */
+        .slots-container {
+            width: 95%;
+            max-width: 650px;
+            margin-top: 25px;
+            background-color: #131313;
+            border: 2px solid #ff4500;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .squads-list {
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .squad-card {
+            background-color: #1a1a1a;
+            border: 2px solid #252525;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        
+        .squad-header {
+            color: #ff4500;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 2px solid #ff4500;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .player-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .player-box {
+            background-color: #0e0e0e;
+            border: 1px dashed #333;
+            border-radius: 6px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .player-box.occupied {
+            background-color: #2d1a12;
+            border: 1px solid #ff4500;
+            color: #fff;
+        }
+
+        .player-info-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-grow: 1;
+        }
+        
+        .p-num {
+            color: #777;
+            font-size: 12px;
+            min-width: 70px;
+        }
+        
+        .p-name {
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .p-uid {
+            color: #ff4500;
+            font-size: 12px;
+            background-color: rgba(255, 69, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 69, 0, 0.2);
+        }
+
+        .remove-btn {
+            color: #ff4500;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 0 10px;
+        }
+
+        .textbox input, .textbox select {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #333;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .notice-container {
+            width: 95%;
+            max-width: 650px;
+            margin-top: 25px;
+            margin-bottom: 30px;
+            background-color: #111;
+            border: 2px dashed #ff4500;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .admin-trigger {
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #111; border-bottom: 2px solid #ff4500;">
+        <h2 style="color: #ff4500; margin: 0; font-family: sans-serif;">FF Hub</h2>
+        <span style="color: #fff; font-weight: bold;">Daily 4 Matches</span>
+    </header>
+
+    <!-- Marquee News Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            ⚠️ NOTICE: <span>4 Matches Everyday!</span> Select your time slot, check your squad board, and register to claim the prize! 🔥
+        </div>
+    </div>
+
+    <!-- Main Workspace Dashboard -->
+    <div style="padding: 20px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        
+        <!-- Tournament Time Selector Buttons -->
+        <h3 style="color: #fff; margin-bottom: 10px; font-family: sans-serif; letter-spacing: 1px; font-size: 16px;">SELECT TOURNAMENT TIME:</h3>
+        
+        <div class="time-tabs-container">
+            <div class="time-tab active" onclick="switchMatch('T1')" id="tab-T1">🌅 07:30 AM</div>
+            <div class="time-tab" onclick="switchMatch('T2')" id="tab-T2">🚗 08:30 AM</div>
+            <div class="time-tab" onclick="switchMatch('T3')" id="tab-T3">🌃 08:00 PM</div>
+            <div class="time-tab" onclick="switchMatch('T4')" id="tab-T4">🌌 09:00 PM</div>
+        </div>
+
+        <!-- Info Card Box Layout -->
+        <div class="login-box">
+            <h3 id="current-match-title" style="color: #ff4500; margin-top:0; margin-bottom: 15px; text-transform: uppercase;">Match: 07:30 AM</h3>
+            <p style="color: #ccc; margin-bottom: 8px; font-size: 15px;">Type: Squad (Classic)</p>
+            <p style="color: #ccc; margin-bottom: 8px; font-size: 15px;">1st Position: <span style="color: #00ffcc; font-weight: bold;">₹30</span></p>
+            <p style="color: #ccc; margin-bottom: 15px; font-size: 15px;">2nd Position: <span style="color: #00ffcc; font-weight: bold;">₹20</span></p>
+            
+            <div style="background-color: #222; padding: 12px; border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: #aaa; font-size: 15px;">Remaining Team Slots:</span>
+                <div>
+                    <span id="slot-count" style="color: #ff4500; font-weight: bold; font-size: 22px;">48</span>
+                    <span style="color: #aaa; font-size: 16px;"> / 48</span>
+                </div>
+            </div>
+
+            <button class="btn" id="reg-btn" onclick="openRegistration()" style="width: 100%;">Register For This Match</button>
+            
+            <!-- YouTube Link Button Added Here -->
+            <a href="https://youtu.be/iIOMNTNoShE?si=U7_HoGooPaZVWZ-b" target="_blank" class="btn btn-yt">📺 How to Register? (વીડિયો જુઓ)</a>
+        </div>
+
+        <!-- Live Custom Room Details Box -->
+        <div class="room-details-box" id="live-room-box">
+            <h4>⚔️ Custom Room Live Details ⚔️</h4>
+            <div class="room-info-flex">
+                <div class="room-field">Room ID: <span id="display-room-id">-------</span></div>
+                <div class="room-field">Password: <span id="display-room-pass">-------</span></div>
+            </div>
+        </div>
+
+        <!-- Dynamic Squad Layout Dashboard -->
+        <div class="slots-container">
+            <h3 id="board-title" style="color: #ff4500; margin: 0; text-align: center; text-transform: uppercase; letter-spacing: 1px;">Squad Board (07:30 AM)</h3>
+            <div class="squads-list" id="squads-display-list">
+                <!-- Injected dynamically by Javascript -->
+            </div>
+        </div>
+
+        <!-- Rules Layout Sheet -->
+        <div class="notice-container">
+            <h3 style="color: #ff4500; margin: 0 0 15px 0; text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">⚠️ Tournament Rules</h3>
+            <ul style="color: #ccc; padding-left: 20px; font-size: 14px; line-height: 1.6; margin:0;">
+                <li>Make sure to join the correct slot you registered for inside the custom room.</li>
+                <li>Hacking or using unfair means will lead to immediate squad disqualification.</li>
+                <li>Room ID and Password will display live inside the selected match tab 10 minutes before the start time.</li>
+            </ul>
+        </div>
+
+        <!-- Secret Control Center Hook -->
+        <button class="admin-trigger" onclick="openAdminPanel()">⚙️ Admin Room Control center</button>
+    </div>
+
+    <!-- Registration Window Modal Modal Overlay -->
+    <div id="reg-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 999;">
+        <div class="login-box" style="width: 90%; max-width: 360px; padding: 25px;">
+            <h3 id="modal-title" style="color: #ff4500; margin-bottom: 20px; font-size: 18px; text-align: center;">Join Squad</h3>
+            
+            <div class="textbox"><input type="text" id="player-name" placeholder="In-Game Name (IGN)"></div>
+            <div class="textbox"><input type="number" id="player-uid" placeholder="Free Fire Fire UID"></div>
+            <div class="textbox"><input type="password" id="player-pin" placeholder="Set Secret 4-Digit PIN" maxlength="4"></div>
+            <div class="textbox"><select id="squad-select" onchange="updatePlayerDropdown()"></select></div>
+            <div class="textbox"><select id="player-slot-select"></select></div>
+
+            <button class="btn" onclick="submitRegistration()" style="margin-bottom: 10px; width: 100%;">Confirm & Join</button>
+            <button class="btn" onclick="closeRegistration()" style="background-color: #333; width: 100%;">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        var totalSquads = 12;
+        var playersPerSquad = 4;
+        var adminPassword = "1234"; 
+        var currentMatchKey = "T1";
+
+        // Separate Object Database Architecture for 4 Different Pages Configuration
+        var matchesDatabase = {
+            T1: { title: "07:30 AM Match", label: "07:30 AM", roomId: "", roomPass: "", data: [] },
+            T2: { title: "08:30 AM Match", label: "08:30 AM", roomId: "", roomPass: "", data: [] },
+            T3: { title: "08:00 PM Match", label: "08:00 PM", roomId: "", roomPass: "", data: [] },
+            T4: { title: "09:00 PM Match", label: "09:00 PM", roomId: "", roomPass: "", data: [] }
+        };
+
+        // Injects Fresh Arrays inside database
+        for (var key in matchesDatabase) {
+            for (var i = 0; i < totalSquads; i++) {
+                matchesDatabase[key].data.push(new Array(playersPerSquad).fill(null));
+            }
+        }
+
+        // Main Tab Switch Handler Trigger
+        function switchMatch(key) {
+            currentMatchKey = key;
+            
+            // Re-render Selection Buttons Status
+            document.querySelectorAll('.time-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + key).classList.add('active');
+
+            // Set Page Dynamic Header Information
+            document.getElementById('current-match-title').innerText = "Match: " + matchesDatabase[key].label;
+            document.getElementById('board-title').innerText = "Squad Board (" + matchesDatabase[key].label + ")";
+
+            // Manage Custom Room Container State
+            var roomBox = document.getElementById('live-room-box');
+            if(matchesDatabase[key].roomId && matchesDatabase[key].roomPass) {
+                document.getElementById('display-room-id').innerText = matchesDatabase[key].roomId;
+                document.getElementById('display-room-pass').innerText = matchesDatabase[key].roomPass;
+                roomBox.style.display = "block";
+            } else {
+                roomBox.style.display = "none";
+            }
+
+            // Sync Database Data with layout rendering engine
+            displaySquads();
+        }
+
+        // Layout Rendering Engine Engine Setup
+        function displaySquads() {
+            var container = document.getElementById('squads-display-list');
+            container.innerHTML = "";
+            var totalFilled = 0;
+            var currentData = matchesDatabase[currentMatchKey].data;
+
+            for (var s = 0; s < totalSquads; s++) {
+                var squadCard = document.createElement('div');
+                squadCard.className = "squad-card";
+                
+                var header = document.createElement('div');
+                header.className = "squad-header";
+                header.innerHTML = `<span>Squad ${s + 1}</span>`;
+                squadCard.appendChild(header);
+
+                var row = document.createElement('div');
+                row.className = "player-row";
+
+                for (var p = 0; p < playersPerSquad; p++) {
+                    var player = currentData[s][p];
+                    var box = document.createElement('div');
+                    
+                    if (player) {
+                        totalFilled++;
+                        box.className = "player-box occupied";
+                        box.innerHTML = `<div class="player-info-left">
+                                            <span class="p-num">Player ${p + 1}</span>
+                                            <span class="p-name">${player.name}</span>
+                                         </div>
+                                         <span class="p-uid">ID: ${player.uid}</span>
+                                         <span class="remove-btn" onclick="leaveSlot(${s}, ${p})">×</span>`;
+                    } else {
+                        box.className = "player-box";
+                        box.innerHTML = `<div class="player-info-left">
+                                            <span class="p-num">Player ${p + 1}</span>
+                                            <span style="color:#444; font-style: italic;">Empty Slot</span>
+                                         </div>`;
+                    }
+                    row.appendChild(box);
+                }
+                squadCard.appendChild(row);
+                container.appendChild(squadCard);
+            }
+
+            var remaining = 48 - totalFilled;
+            document.getElementById('slot-count').innerText = remaining;
+        }
+
+        function openAdminPanel() {
+            var access = prompt("Enter Admin Secret Code:");
+            if (access === adminPassword) {
+                var newRoomId = prompt("Enter Room ID for " + matchesDatabase[currentMatchKey].label + " Match:");
+                var newRoomPass = prompt("Enter Room Password for " + matchesDatabase[currentMatchKey].label + " Match:");
+                
+                if (newRoomId && newRoomPass) {
+                    matchesDatabase[currentMatchKey].roomId = newRoomId;
+                    matchesDatabase[currentMatchKey].roomPass = newRoomPass;
+                    
+                    document.getElementById('display-room-id').innerText = newRoomId;
+                    document.getElementById('display-room-pass').innerText = newRoomPass;
+                    document.getElementById('live-room-box').style.display = "block";
+                    alert("Room details published live for " + matchesDatabase[currentMatchKey].label + "!");
+                } else {
+                    alert("Fields cannot be empty!");
+                }
+            } else if (access !== null) {
+                alert("Access Denied! Wrong Admin Code.");
+            }
+        }
+
+        function leaveSlot(squadIndex, playerIndex) {
+            var currentData = matchesDatabase[currentMatchKey].data;
+            var playerData = currentData[squadIndex][playerIndex];
+            if (!playerData) return;
+
+            var userPin = prompt("Enter your 4-Digit Secret PIN to leave this slot:");
+            if (userPin === null) return;
+
+            if (userPin === playerData.pin) {
+                currentData[squadIndex][playerIndex] = null;
+                displaySquads();
+                alert("Slot released 
